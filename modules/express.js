@@ -4,7 +4,7 @@ const UserModel = require("../src/models/user.model");
 const app = express();
 app.use(express.json());
 app.set("view engine", "ejs"); // utilizar ejs como engine para html
-app.set("views", "./src/views");
+app.set("views", "src/views");
 
 // middlewares no express:
 // A middleware sao funcoes que sao executadas antes de qualquer requisicao que fazemos, e precisamos usar o next() para continuar a rodar a requisicao.
@@ -30,6 +30,11 @@ app.get("/users", async (req, res) => {
     return res.status(500).send(error.message);
   }
 });
+
+app.get("/views/users", async (req, res) => {
+  const users = await UserModel.find({});
+  res.render("index", {users: users}); //{users: users} -> serve para passar o objeto para a view.
+})
 
 // buscar usuarios por id
 app.get("/users/:id", async (req, res) => {
